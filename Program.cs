@@ -1106,3 +1106,24 @@ namespace MiniBankSystemProjectOverview
             // Display the total balance
             Console.WriteLine($"Total Bank Balance: {totalBalance}");
         }
+
+
+
+        //_________Delete Account___________
+        public static void DeleteAccount(int IndexID)
+        {
+            // Check if the user exists in the list
+            if (IndexID >= 0 && IndexID < AccountUserNationalID.Count)
+            {
+                // Remove the user from all lists
+                AccountUserNames.RemoveAt(IndexID);
+                AccountUserNationalID.RemoveAt(IndexID);
+                UserBalances.RemoveAt(IndexID);
+                accountNumbers.RemoveAt(IndexID);
+                Console.WriteLine("Account deleted successfully.");
+            }
+            else
+            {
+                Console.WriteLine("Invalid user index. Account deletion failed.");
+            }
+        }
