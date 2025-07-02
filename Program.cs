@@ -545,3 +545,8 @@ namespace MiniBankSystemProjectOverview
             //Print any exception message that occurs during execution.
             catch (Exception e) { Console.WriteLine(e.Message); }
         }
+        //__________Check Balance Function________
+        public static void CheckBalance(int IndexID)
+        {
+            Console.WriteLine($"Your Current Balance is {UserBalances[IndexID]}");
+        }
