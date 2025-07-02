@@ -1087,3 +1087,14 @@ namespace MiniBankSystemProjectOverview
             }
 
         }
+        //______Search by National ID or Name (Admin Tool)_____
+        public static void SearchUserByNationalID(int UserIndexID)
+        {
+
+            //display user account number, name , balance with the enter national id 
+            Console.WriteLine($"User Account Numbaer : {accountNumbers[UserIndexID]}");
+            Console.WriteLine($"User Name : {AccountUserNames[UserIndexID]}");
+            Console.WriteLine($"User Balance : {UserBalances[UserIndexID]}");
+
+
+        }
