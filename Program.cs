@@ -1108,7 +1108,6 @@ namespace MiniBankSystemProjectOverview
         }
 
 
-
         //_________Delete Account___________
         public static void DeleteAccount(int IndexID)
         {
@@ -1125,5 +1124,26 @@ namespace MiniBankSystemProjectOverview
             else
             {
                 Console.WriteLine("Invalid user index. Account deletion failed.");
+            }
+        }
+
+        //_____________Show Top 3 Richest Customers_________ 
+        public static void ShowTop3RichestCustomers()
+        {
+            // Check if there are at least 3 users
+            if (UserBalances.Count < 3)
+            {
+                Console.WriteLine("Not enough users to determine the top 3 richest customers.");
+                return;
+            }
+            // Create a list of tuples containing user index and balance
+            var userBalancesWithIndex = UserBalances.Select((balance, index) => (index, balance)).ToList();
+            // Sort the list by balance in descending order
+            var top3Richest = userBalancesWithIndex.OrderByDescending(x => x.balance).Take(3).ToList();
+            // Display the top 3 richest customers
+            Console.WriteLine("Top 3 Richest Customers:");
+            foreach (var user in top3Richest)
+            {
+                Console.WriteLine($"Account Number: {accountNumbers[user.index]}, Name: {AccountUserNames[user.index]}, Balance: {user.balance}");
             }
         }
