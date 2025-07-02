@@ -164,3 +164,54 @@ namespace MiniBankSystemProjectOverview
                 Console.ReadLine();
             }
         }
+
+        // ==========  Addition The  Function Types Of The  Admin Menu==========
+
+        static void AdminMenu()
+        {
+            bool inAdminMenu = true;
+            // while loop to display the mnue ewhile the flag is true
+            while (inAdminMenu)
+            {
+                Console.Clear();
+                Console.WriteLine("\n------ Admin Menu ------");
+                Console.WriteLine("1. create account");
+                Console.WriteLine("2. Login");
+                Console.WriteLine("0. Return to Main Menu");
+                Console.Write("Select option: ");
+                string adminChoice = Console.ReadLine();
+
+                switch (adminChoice)
+                {
+                    // case to Request Account Creation
+                    case "1":
+                        AdminCreateAccount();
+                        Console.ReadLine();
+                        break;
+
+                    case "2":
+                        IndexID = AdminLoginWithID();
+                        Console.ReadLine(); // Wait for user input before continuing
+                        if (IndexID != -1)
+                        {
+                            AdminMenuOperations();
+                            Console.ReadLine();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Login failed. Please check your National ID.");
+                        }
+                        break;
+
+                    case "0": inAdminMenu = false; break; // this will Eixt the  loop and return
+                    default:
+                        Console.WriteLine("Invalid choice.");
+
+                        Console.WriteLine("press any key");
+                        Console.ReadLine();
+
+                        break;
+                }
+
+            }
+        }
