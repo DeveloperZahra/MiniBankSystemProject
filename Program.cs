@@ -120,3 +120,47 @@ namespace MiniBankSystemProjectOverview
             } while (choice == 'y' || choice == 'Y');
             Console.WriteLine("Thank you for using Bank System!");
         }
+
+
+        // ==========  Addition The  Function Types Of The  User Menu==========
+        static void UserMenu()
+        {
+            bool inUserMenu = true;
+            //const int MaxLoginAttempts = 5;
+            while (inUserMenu)
+            {
+                Console.Clear();
+                Console.WriteLine("\n------ User Menu ------");
+                Console.WriteLine("1. Request Account Creation");
+                Console.WriteLine("2. Login");
+                Console.WriteLine("0. Return to Main Menu");
+                Console.Write("Select Option: ");
+                string userChoice = Console.ReadLine();
+                Console.WriteLine();
+
+
+
+                switch (userChoice)
+                {
+                    case "1": RequestAccountCreation(); break;
+                    case "2":
+                        IndexID = UserLoginWithID();
+                        Console.ReadLine(); // Wait for user input before continuing
+                        if (IndexID != -1)
+                        {
+                            UserMenuOperations(IndexID);
+                            Console.ReadLine();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Login failed. Please check your National ID.");
+                        }
+                        break;
+                    // case to exist from user menu and Return to Main Menu 
+                    case "0": inUserMenu = false; break;
+                    default: Console.WriteLine("Invalid choice , Please Try Agine! "); break;
+                }
+                Console.WriteLine("press any key");
+                Console.ReadLine();
+            }
+        }
