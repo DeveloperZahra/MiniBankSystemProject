@@ -579,3 +579,44 @@ namespace MiniBankSystemProjectOverview
                 Console.WriteLine("Failed Submitted, try agine!");
             }
         }
+
+        //___________login user____________ 
+        public static int UserLoginWithID()
+        {
+            int tries = 0;
+            int IndexId = -1;
+            bool UserExist = false;
+            string ID = "";
+            do
+            {
+                // Prompt user to enter their National ID
+                Console.WriteLine("Enter User National ID: ");
+                ID = Console.ReadLine(); // Read user input from console                           
+                // valid user exist
+                UserExist = UserLogin(ID);
+                if (UserExist == false)
+                {
+                    tries++;
+                }
+                if (tries == 3)
+                {
+                    Console.WriteLine("You have exceeded the number of times you are allowed to enter a valid ID.");
+                    break;
+                }
+            } while (UserExist == false && tries < 3);
+            if (UserExist == true)
+            {
+                //lopp thriugh items in list
+                for (int i = 0; i < AccountUserNationalID.Count; i++)
+                {
+                    //check if Input exist in the list 
+                    if (AccountUserNationalID[i] == ID)
+                    {
+                        // Store the index of the user with the matching ID.
+                        IndexId = i;
+                    }
+                }
+            }
+
+            return IndexId;
+        }
