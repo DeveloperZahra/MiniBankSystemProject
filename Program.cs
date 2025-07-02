@@ -1185,3 +1185,28 @@ namespace MiniBankSystemProjectOverview
             Console.WriteLine($"Holder Name: {accountNames[index]}");//This prints the name of the account holder corresponding to this account.
             Console.WriteLine($"Current Balance: {balances[index]}");//This prints the current balance of the account selected by the user.
         }
+
+
+        //_________Get Account Index(10)____________
+        static int GetAccountIndex()
+        {
+            Console.Write("Enter account number: ");
+            try //Starts a try block to attempt to execute the code normally with the possibility of catching errors.
+            {
+                int accNum = Convert.ToInt32(Console.ReadLine());
+                int index = accountNumbers.IndexOf(accNum); //Finds the index of this account number accNum within the list accountNumbers.If it finds it, it returns its position(e.g., 0, 1, or 2).If it does not find it, it returns -1.
+                //If index returns -1 (meaning the account number is not in the list), it prints the message "Account not found", and returns -1 to tell other functions that the account does not exist.
+                if (index == -1)
+                {
+                    Console.WriteLine("Account not found.");
+                    return -1;
+                }
+
+                return index;
+            }
+            catch //If an error occurs (e.g. the user types text instead of a number), the error is caught and "Invalid input" is printed and -1 is returned as an indication that the input failed.
+            {
+                Console.WriteLine("Invalid input.");
+                return -1;
+            }
+        }
