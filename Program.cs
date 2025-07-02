@@ -650,3 +650,66 @@ namespace MiniBankSystemProjectOverview
 
             Console.WriteLine($"Account created for {name} with Account Number: {newAccountNumber}");
         }
+
+        /*
+       //_________________Transfer money________
+          • Let users transfer money between two account numbers. 
+          • Check balance constraints on sender before transferring.
+       */
+        public static void Transfer(int UserIndexID, int UserIndexID2)
+        {
+            string TransferAmount = "";
+            double FinalTransferAmount = 0.0;
+            bool IsTransfer = false;
+            int tries = 0;
+            // Start a try block to catch potential runtime exceptions.
+            int IndexId = -1;
+            bool UserExist = false;
+            try
+            {
+                // Repeat until a valid transfer is made.
+                do
+                {
+                    // Ask user to enter the amount to transfer.
+                    Console.WriteLine("Enter the amount of money you want to transfer: ");
+                    TransferAmount = Console.ReadLine();
+                    // Validate the entered amount using a custom method.
+                    bool ValidTransferAmount = AmountValid(TransferAmount);
+                    if (ValidTransferAmount == false)
+                    {
+                        // Display error if the input is not valid.
+                        Console.WriteLine("Invalid input");
+                        IsTransfer = false;
+                        tries++;
+                    }
+                    else
+                    {
+                        // Convert string to double using TryParse
+                        double.TryParse(TransferAmount, out FinalTransferAmount);
+                        // Check if user balance is sufficient for the transfer.
+                        bool checkBalance = CheckBalanceAmount(FinalTransferAmount, UserIndexID);
+                        if (checkBalance == true)
+                        {
+                            // Update the sender's balance by subtracting the transfer amount.
+                            UserBalances[UserIndexID] -= FinalTransferAmount;
+                            // Update the receiver's balance by adding the transfer amount.
+                            UserBalances[UserIndexID2] += FinalTransferAmount;
+                            Console.WriteLine($"Successfully transferred {FinalTransferAmount} from Account {AccountNumbers[UserIndexID]} to Account {AccountNumbers[UserIndexID2]}");
+                            Console.WriteLine($"Your Current Balance is {UserBalances[UserIndexID]}");
+                            IsTransfer = true; // Set flag to true to exit loop.
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Cannot transfer {FinalTransferAmount} from your balance, as it would result in a balance below 100.00.");
+                        }
+                        return; // Exit method after successful transfer.
+                    }
+                    if (tries == 3)
+                    {
+                        Console.WriteLine("You have exceeded the number of times you are allowed to enter a valid value.");
+                        return;
+                    }
+                } while (IsTransfer == false && tries < 3);
+            }
+            catch (Exception e) { Console.WriteLine(e.Message); } // Print any exception message that occurs during execution.
+        }
