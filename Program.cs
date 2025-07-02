@@ -845,3 +845,97 @@ namespace MiniBankSystemProjectOverview
             }
 
         }
+        //_____Admin Operation______ 
+        public static void AdminMenuOperations()
+        {
+            bool InAdminMenu = true;
+            // while loop to display the mnue ewhile the flag is true
+            while (inAdminMenu)
+            {
+                Console.Clear();
+                Console.WriteLine("\n------ Admin Menu ------");
+                Console.WriteLine("1. Process Next Account Request");
+                Console.WriteLine("2. View Submitted Reviews");
+                Console.WriteLine("3. View All Accounts");
+                Console.WriteLine("4. View Pending Account Requests");
+                Console.WriteLine("5. Search User account by user National ID");
+                Console.WriteLine("6. Show Total Bank Balance");
+                Console.WriteLine("7. Delete Account");
+                Console.WriteLine("8. Show Top 3 Richest Customers");
+                Console.WriteLine("9. Export All Account Info to a New File (CSV or txt)");
+                Console.WriteLine("0. Return to Main Menu");
+                Console.Write("Select Option: ");
+                string userChoice = Console.ReadLine();
+                Console.WriteLine();
+
+                // use switch to select one of many code blocks to be executed
+                switch (adminChoice)
+                {
+                    // case to Process Next Account Request
+                    case '1':
+                        ProcessAccountRequest();
+                        Console.ReadLine();
+                        break;
+                    // case to View Submitted Reviews
+                    case '2':
+                        ViewReviews();
+                        Console.ReadLine();
+                        break;
+                    // case to View All Accounts
+                    case '3':
+                        ViewAllAccounts();
+                        Console.ReadLine();
+                        break;
+                    // case to View Pending Account Requests
+                    case '4':
+                        ViewPendingRequests();
+                        Console.ReadLine();
+                        break;
+                    // Search user by enter user National ID
+                    case '5':
+                        int UserIndexID = UserLoginWithID();
+                        SearchUserByNationalID(UserIndexID);
+                        Console.ReadLine();
+                        break;
+                    // Show Total Bank Balance
+                    case '6':
+                        ShowTotalBankBalance();
+                        Console.ReadLine();
+                        break;
+                    // Delete Account
+                    case '7':
+                        int deleteIndexID = UserLoginWithID();
+                        if (deleteIndexID != -1)
+                        {
+                            DeleteAccount(deleteIndexID);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Login failed. Please check your National ID.");
+                        }
+                        Console.ReadLine();
+                        break;
+                    case '8':
+                        ShowTop3RichestCustomers();
+                        Console.ReadLine();
+                        break;
+                    // Export All Account Info to a New File (CSV or txt)
+                    case '9':
+                        ExportAccountsToFile(ExportFilePath);
+                        Console.WriteLine($"All account information has been exported to {ExportFilePath}");
+                        Console.ReadLine();
+                        break;
+                    // case to Return to Main Menu
+                    case '0':
+                        InAdminMenu = false; // this will exit the loop and return
+                        break;
+                    // default case to display message to the admin if selected the wronge number
+                    default:
+                        Console.WriteLine("Wronge choice number, Try Agine!");
+                        Console.ReadKey();
+                        break;
+
+                }
+            }
+
+        }
