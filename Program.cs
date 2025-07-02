@@ -550,3 +550,32 @@ namespace MiniBankSystemProjectOverview
         {
             Console.WriteLine($"Your Current Balance is {UserBalances[IndexID]}");
         }
+
+        //___________Submit Review Function__________ 
+        public static void SubmitReview()
+        {
+            //error handling using try-catch
+            try
+            {
+                // ask user to enter their review
+                Console.WriteLine("Enter Your Review");
+                string review = Console.ReadLine();
+                //check valid the input review 
+                bool ValidReview = StringlettersWithNumbers(review);
+                if (ValidReview == true)
+                {// push review in stack named "UserReviews"
+                    UserReviewsStack.Push(review);
+                    Console.WriteLine("Your Review successfully submited");
+                }
+                else
+                {
+                    Console.WriteLine("Unvalid input review");
+                }
+
+            }
+            catch
+            {
+                //display massage if review 
+                Console.WriteLine("Failed Submitted, try agine!");
+            }
+        }
