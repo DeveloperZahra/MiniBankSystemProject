@@ -739,3 +739,109 @@ namespace MiniBankSystemProjectOverview
             Console.WriteLine($"New Balance: {balance}");
             Console.WriteLine("---------------------------\n");
         }
+
+        // ===================== Admin Features Function ==========================
+        // Admin create account 
+        public static void AdminCreateAccount()
+        {
+            string UserName = "";
+            bool ValidName = true;
+            string UserID = "";
+            bool ValidID = false;
+            bool IsSave = true;
+            int tries = 0;
+            // Error handling 
+            try
+            {
+                // Enter User Name Process
+                do
+                {
+                    // ask user to enter his name
+                    Console.WriteLine("Enter Your Name: ");
+                    string name = Console.ReadLine();
+                    // valid the name input 
+                    ValidName = stringOnlyLetterValidation(name);
+                    if (ValidName == true)
+                    {
+                        UserName = name;
+                        IsSave = true;
+                    }
+                    else
+                    {
+                        IsSave = false;
+                        tries++;
+                    }
+                    if (tries == 3)
+                    {
+                        Console.WriteLine("You have exceeded the number of times you are allowed to enter a valid value.");
+                        return;
+                    }
+                } while (ValidName == false && tries < 3);
+
+                tries = 0;
+                do
+                {
+                    // ask user to enter his national ID 
+                    Console.WriteLine("Enter your National ID: ");
+                    string ID = Console.ReadLine();
+                    // valid the ID input
+                    ValidID = IDValidation(ID);
+                    // check if 
+                    if (ValidID == true)
+                    {
+                        UserID = ID;
+                        IsSave = true;
+                    }
+                    else
+                    {
+                        IsSave = false;
+                        tries++;
+                    }
+                    if (tries == 3)
+                    {
+                        Console.WriteLine("You have exceeded the number of times you are allowed to enter a valid value.");
+                        return;
+                    }
+                } while (ValidID == false && tries < 3);
+                tries = 0;
+
+                if (IsSave == true)
+                {
+                    bool AlreadyExist = false;
+                    // loop in queue to chech if request with same id already submit to Prevent Duplicate Account Requests 
+                    for (int i = 0; i < AdminID.Count; i++)
+                    {
+                        //check if id in rqures queue id exist or not 
+                        if (AdminID[i] == UserID)
+                        {
+                            // if yes put AlreadyRequested flag with true value
+                            AlreadyExist = true;
+                            break;
+                        }
+
+                    }
+                    // based on AlreadyRequested flad we decided if we save user inputes of account information or not 
+                    if (AlreadyExist)
+                    {
+                        Console.WriteLine("Admin with this ID number is already exist");
+                    }
+                    else
+                    {
+                        int NewAdminAccountNumber = LastAdminAccountNumber + 1;
+                        AdminAccountNumber.Add(NewAdminAccountNumber);
+                        AdminName.Add(UserName);
+                        AdminID.Add(UserID);
+                        Console.WriteLine("Request Account Creation successfully submitted.");
+                        LastAdminAccountNumber = NewAdminAccountNumber;
+                    }
+                }
+
+
+            }
+            catch
+            {
+                // display message submit failed 
+                Console.WriteLine("Admin Account Creation failed");
+            }
+
+        }
