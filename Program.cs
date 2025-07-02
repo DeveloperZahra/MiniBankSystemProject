@@ -620,3 +620,33 @@ namespace MiniBankSystemProjectOverview
 
             return IndexId;
         }
+
+
+        //_____________Process Next Acount Request(2)____________
+        static void ProcessNextAccountRequest()
+        {
+            //check if the list of account requests is empty or not. If it is empty, it prints a message "There are no pending account requests", then exits the function directly using return.
+            if (createAccountRequests.Count == 0)
+            {
+                Console.WriteLine("No pending account requests.");
+                return;
+            }
+
+            //var (name, nationalID) = createAccountRequests.Dequeue();
+            string request = createAccountRequests.Dequeue();//This request is a string that takes the first request in the createAccountRequests list, dequeues it, and stores it in the request variable.
+                                                             //Here, the string is split into two parts using the | symbol as a separator.
+            string[] parts = request.Split('|');
+            // The resulting array will be parts, where parts[0] = the name and parts[1] = the national ID number.
+            string name = parts[0];
+            string nationalID = parts[1];
+
+            int newAccountNumber = lastAccountNumber + 1;//This creates a new account number by adding 1 to the last registered account number.
+
+            accountNumbers.Add(newAccountNumber);//to Adds new account to several lists
+            accountNames.Add($"{name} ");
+            balances.Add(0.0);
+
+            lastAccountNumber = newAccountNumber;//The last account number (lastAccountNumber) will be the new account number that was created.
+
+            Console.WriteLine($"Account created for {name} with Account Number: {newAccountNumber}");
+        }
