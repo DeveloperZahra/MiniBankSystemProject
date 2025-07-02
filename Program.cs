@@ -713,3 +713,19 @@ namespace MiniBankSystemProjectOverview
             }
             catch (Exception e) { Console.WriteLine(e.Message); } // Print any exception message that occurs during execution.
         }
+
+        //_________Undo Last Complaint Submitted________ 
+        public static void UndoLastComplaint()
+        {
+            // Check if there are any reviews in the stack
+            if (UserReviewsStack.Count > 0)
+            {
+                // Pop the last review from the stack
+                string lastReview = UserReviewsStack.Pop();
+                Console.WriteLine($"Last review '{lastReview}' has been undone.");
+            }
+            else
+            {
+                Console.WriteLine("No reviews to undo.");
+            }
+        }
