@@ -939,3 +939,43 @@ namespace MiniBankSystemProjectOverview
             }
 
         }
+
+        //________login Admin__________ 
+        public static int AdminLoginWithID()
+        {
+            int tries = 0;
+            int IndexId = -1;
+            bool AdminExist = false;
+            string ID = "";
+            do
+            {
+                // Prompt user to enter their National ID
+                Console.WriteLine("Enter You National ID: ");
+                ID = Console.ReadLine(); // Read user input from console
+                AdminExist = AdminLogin(ID);
+                if (AdminExist == false)
+                {
+                    tries++;
+                }
+                if (tries == 3)
+                {
+                    Console.WriteLine("You have exceeded the number of times you are allowed to enter a valid ID.");
+                    break;
+                }
+            } while (AdminExist == false && tries < 3);
+            if (AdminExist == true)
+            {
+                //loop thriugh items in list
+                for (int i = 0; i < AdminID.Count; i++)
+                {
+                    //check if Input exist in the list 
+                    if (AdminID[i] == ID)
+                    {
+                        // Store the index of the user with the matching ID.
+                        IndexId = i;
+                    }
+                }
+            }
+
+            return IndexId;
+        }
