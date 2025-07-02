@@ -1601,3 +1601,53 @@ namespace MiniBankSystemProjectOverview
             }
 
         }
+
+        //_-_-_2. save and load reviews_-_-_
+        // Define a static method to save user reviews to a file 
+        public static void SaveReviews()
+        {
+            try // Try to execute the code inside the block
+            {
+                // Open the file for writing 
+                using (StreamWriter writer = new StreamWriter(ReviewsFilePath))
+                {
+                    // Loop through all reviews
+                    foreach (var review in UserReviewsStack)
+                    {
+                        // Write the review line into the file
+                        writer.WriteLine(review);
+                    }
+                }
+            }
+            catch // // If any error occurs during saving
+            {
+                // Inform the user that there was an error saving the file
+                Console.WriteLine("Error saving reviews.");
+            }
+        }
+        // Define a static method to load user reviews to a file 
+        public static void LoadReviews()
+        {
+            try // Try to execute the code inside the block
+            {
+                // Check if the accounts file does not exist
+                if (!File.Exists(ReviewsFilePath)) return;
+                // Open the file for reading using StreamReader
+                using (StreamReader reader = new StreamReader(ReviewsFilePath))
+                {
+                    // declare line variable to hold every line 
+                    string line;
+                    // Read each line until the end of the file
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        // load the value of line in  UserReviewsStack
+                        UserReviewsStack.Push(line);
+                    }
+                }
+            }
+            catch // If any error happens
+            {
+                // Inform the user that there was an error loading the file
+                Console.WriteLine("Error loading reviews.");
+            }
+        }
