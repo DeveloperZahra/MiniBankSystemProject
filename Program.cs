@@ -729,3 +729,13 @@ namespace MiniBankSystemProjectOverview
                 Console.WriteLine("No reviews to undo.");
             }
         }
+
+        //_________Print Receipt After Deposit/Withdraw_________ 
+        public static void PrintReceipt(string transactionType, double amount, double balance)
+        {
+            Console.WriteLine("\n--- Transaction Receipt ---");
+            Console.WriteLine($"Transaction Type: {transactionType}");
+            Console.WriteLine($"Amount: {amount}");
+            Console.WriteLine($"New Balance: {balance}");
+            Console.WriteLine("---------------------------\n");
+        }
