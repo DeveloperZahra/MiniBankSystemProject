@@ -1147,3 +1147,30 @@ namespace MiniBankSystemProjectOverview
                 Console.WriteLine($"Account Number: {accountNumbers[user.index]}, Name: {AccountUserNames[user.index]}, Balance: {user.balance}");
             }
         }
+
+        /* 
+      _________________Export All Account Info to a New File (CSV or txt)__________ 
+         • Create a clean export with headers and all customer info.
+     */
+
+        public static void ExportAccountsToFile(string filePath)
+        {
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(filePath))
+                {
+                    // Write headers
+                    writer.WriteLine("Account Number,User Name,National ID,Balance");
+                    // Iterate through all accounts and write their information
+                    for (int i = 0; i < AccountUserNationalID.Count; i++)
+                    {
+                        writer.WriteLine($"{accountNumbers[i]},{AccountUserNames[i]},{AccountUserNationalID[i]},{UserBalances[i]}");
+                    }
+                }
+                Console.WriteLine($"Accounts exported successfully to {filePath}");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error exporting accounts: {e.Message}");
+            }
+        }
