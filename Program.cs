@@ -481,3 +481,67 @@ namespace MiniBankSystemProjectOverview
             catch (Exception e) { Console.WriteLine(e.Message); }
 
         }
+
+        //__________________Withdraw Function_____________ 
+        public static void withdraw()
+        {
+            int tries = 0;
+            // Initialize a boolean flag to control the deposit loop.
+            bool IsWithdraw = false;
+            // Initialize a variable to store the final parsed deposit amount.
+            double FinalwithdrawAmount = 0.0;
+            // declare variable print balance after any process
+            double BalanceAfterProcess = 0.0;
+            // Start a try block to catch potential runtime exceptions.
+            try
+            {
+                // Repeat until a valid deposit is made.
+                do
+                {
+
+                    Console.WriteLine("Enter the amount of money you want to withdrw from your balance: ");
+                    string WithdrawAmount = Console.ReadLine();
+                    // Validate the entered amount using a custom method.
+                    bool ValidWithAmount = AmountValid(WithdrawAmount);
+                    if (ValidWithAmount == false)
+                    {
+                        // Display error if the input is not valid.
+                        Console.WriteLine("Invalid input");
+                        IsWithdraw = false;
+                        tries++;
+                    }
+                    // If input is valid, find the user index.
+                    else
+                    {
+
+                        // convert string to double using TryParse
+                        double.TryParse(WithdrawAmount, out FinalwithdrawAmount);
+                        // check if user balamce is less than or equal MinimumBalance
+                        bool checkBalance = CheckBalanceAmount(FinalwithdrawAmount, IndexID);
+                        if (checkBalance == true)
+                        {
+                            // Update the user's balance by adding the deposit amount.
+                            UserBalances[IndexID] = UserBalances[IndexID] - FinalwithdrawAmount;
+                            Console.WriteLine($"Successfully withdraw");
+                            PrintReceipt(transactionType: "Withdraw", amount: FinalwithdrawAmount, balance: UserBalances[IndexID]);
+                            // Set the flag to true to exit the loop.
+                            IsWithdraw = true;
+                        }
+                        else
+                        {
+                            BalanceAfterProcess = UserBalances[IndexID] - FinalwithdrawAmount;
+                            Console.WriteLine($"Can not withdraw {FinalwithdrawAmount} from your balance, becouse your balance after with draw is {BalanceAfterProcess} which less than 100.00");
+                        }
+                        return;
+
+                    }
+                    if (tries == 3)
+                    {
+                        Console.WriteLine("You have exceeded the number of times you are allowed to enter a valid value.");
+                        return;
+                    }
+                } while (IsWithdraw == false && tries < 3);
+            }
+            //Print any exception message that occurs during execution.
+            catch (Exception e) { Console.WriteLine(e.Message); }
+        }
