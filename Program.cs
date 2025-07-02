@@ -1030,3 +1030,60 @@ namespace MiniBankSystemProjectOverview
             }
 
         }
+
+        //______Process Account Request Function____ 
+        public static void ProcessAccountRequest()
+        {
+            // handling error using try-catch
+            try
+            {
+                // check if there is request
+                if (createAccountRequests.Count == 0)
+                {
+                    Console.WriteLine("No pending account requests.");
+                    return;
+                }
+                // get last element (which it is first element enter) in the queue
+                string request = createAccountRequests.Dequeue();
+                // Split the request string using '|' to separate username and national ID
+                string[] SplitRrquest = request.Split("|");
+                // Extract and store the username from the request
+                string UserName = SplitRrquest[0];
+                Console.WriteLine($"User Name: {UserName} ");
+                // Extract and store the national ID from the request
+                string UserNationalID = SplitRrquest[1];
+                Console.WriteLine($"User National ID: {UserNationalID} ");
+                // Increment the last account ID number for the new account
+                int NewAccountIDNumber = LastAccountNumber + 1;
+                // Set initial account balance to 0
+                double balance = MinimumBalance;
+                Console.WriteLine("Do you want to accept account creation request (y/n) !");
+                char choice = Console.ReadKey().KeyChar;
+                if (choice == 'y' || choice == 'Y')
+                {
+                    // Add user name in the AccountUserNames list
+                    AccountUserNames.Add(UserName);
+                    // Add user national ID in the AccountUserNationalID list
+                    AccountUserNationalID.Add(UserNationalID);
+                    // Add user Account ID in the AccountIDNumbers list
+                    accountNumbers.Add(NewAccountIDNumber);
+                    // Add user initial balance in the Balances list
+                    UserBalances.Add(balance);
+                    // add user type 
+                    Console.WriteLine($"Account created for {UserName} with Account Number: {NewAccountIDNumber}");
+                    LastAccountNumber = NewAccountIDNumber;
+                }
+                else
+                {
+                    Console.WriteLine("Account Dose not accept!");
+                    string InAcceptRequest = request;
+                    InAcceptcreateAccountRequests.Enqueue(InAcceptRequest);
+                }
+            }
+            catch
+            {
+                //display massage to the user if anyy error happened during running program 
+                Console.WriteLine("Accept process fail, Try Agine!");
+            }
+
+        }
