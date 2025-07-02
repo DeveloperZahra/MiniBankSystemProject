@@ -1011,3 +1011,22 @@ namespace MiniBankSystemProjectOverview
             }
 
         }
+
+        //___________ View Reviews Function______________ 
+        public static void ViewReviews()
+        {
+            //error handling using try-catch
+            try
+            {
+                //iteration all users reviews in UserReviews stack 
+                foreach (string Review in UserReviewsStack)
+                {
+                    Console.WriteLine(Review);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+        }
