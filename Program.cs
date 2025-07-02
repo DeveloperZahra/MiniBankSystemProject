@@ -1788,3 +1788,92 @@ namespace MiniBankSystemProjectOverview
             }
 
         }
+
+        //_-_-_5. save and load inaccept reqest_-_-_ 
+        //___Define a static method to save user requests to a file____
+        public static void SaveInRequestsToFaile()
+        {
+            try // Try to execute the code inside the block
+            {
+                // Open the file for writing 
+                using (StreamWriter writer = new StreamWriter(InAcceptRequestsFilePath))
+                {
+                    // Loop through all reviews
+                    foreach (var InAcceptrequest in InAcceptcreateAccountRequests)
+                    {
+                        // Write the inAccept request line into the file
+                        writer.WriteLine(InAcceptrequest);
+                    }
+                }
+                // Inform the user that accounts were saved successfully
+                Console.WriteLine("Inrequests saved successfully.");
+            }
+            catch // If any error occurs during saving
+            {
+                // Inform the user that there was an error saving the file
+                Console.WriteLine("Error saving InAcceptrequest to file.");
+            }
+        }
+
+        //_____Define a static method to load user requests to a file________ 
+        public static void LoadInAcceptRequests()
+        {
+            try // Try to execute the code inside the block
+            {
+                // Check if the accounts file does not exist
+                if (!File.Exists(InAcceptRequestsFilePath)) return;
+                // Open the file for reading using StreamReader
+                using (StreamReader reader = new StreamReader(InAcceptRequestsFilePath))
+                {
+                    // declare line variable to hold every line 
+                    string line;
+                    // Read each line until the end of the file
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        // load the value of line in  UserReviewsStack
+                        InAcceptcreateAccountRequests.Enqueue(line);
+                    }
+                }
+            }
+            catch // If any error happens
+            {
+                // Inform the user that there was an error loading the file
+                Console.WriteLine("Error loading InAccept request.");
+            }
+        }
+
+        //_________check balance amount to decided if we can withdraw or not___________
+        public static bool CheckBalanceAmount(double FinalAmount, int indexID)
+        {
+            // flag 
+            bool GoWithProcess = false;
+            // check if balance has more than Minimum Balance 
+            if ((UserBalances[IndexID] > MinimumBalance) && (FinalAmount <= (UserBalances[IndexID] - MinimumBalance)))
+            {
+                // put flag as true if user can go with process 
+                GoWithProcess = true;
+            }
+            else
+            {
+                // put flag as flase if user can not go with process becoouse its balance has just 100.00$
+                GoWithProcess = false;
+            }
+
+            return GoWithProcess;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
+
+}
