@@ -67,3 +67,56 @@ namespace MiniBankSystemProjectOverview
         static List<string> AccountUserNames = new List<string>();
         static List<string> AccountUserNationalID = new List<string>();
         static List<double> UserBalances = new List<double>();
+
+
+        // ____________________________ Menu Functions _______________________
+        static void Main(string[] args)
+        {
+
+
+            LoadAccountsInformationFromFile(); //This function makes the program retrieve all previous calculations from a text file and prepare them for operation while it runs.
+            LoadReviews(); //Read reviews from the file and refill them in the stack.
+            LoadRequests(); //To download or retrieve all requests from a source
+            LoadAdminInformationFromFile(); //To download Admin information from the file
+            LoadInAcceptRequests(); //To upload applications that have not yet been accepted (not accepted or pending).
+
+            // _______main menu for system bank to store user choice in avriable _______
+            bool running = true;
+            char choice;
+            do
+            {
+                while (running)
+                {
+                    Console.Clear();//____just to clear the screen____
+                    Console.WriteLine("\n====== Welcome To Bank System ======");
+                    Console.WriteLine("1. User Menu");
+                    Console.WriteLine("2. Admin Menu");
+                    Console.WriteLine("0. Exit the system");
+                    Console.Write(" Please Select Your Option:\n ");
+                    string mainChoice = Console.ReadLine();
+
+                    // user switch method to select one of many code blocks to be executed.
+                    switch (mainChoice)
+                    {
+                        case "1": UserMenu(); break;  // case to display user menu
+                        case "2": AdminMenu(); break;   // case to display Admin menu
+                        case "0":    // case to Exist from whole system
+                            SaveAccountsInformationToFile();// This saves all account data to a text file in an organized and secure manner.
+                            SaveReviews(); //All revisions in a stack are saved in a text file.
+                            SaveRequestsToFaile(); //Save orders to a file
+                            SaveAdminInformationToFile(); //Save manager/administrator information to a file.
+                            SaveInRequestsToFaile(); //Save "Entry Requests" or "Internal Requests" to a file
+
+
+                            running = false; //____Keep running  false to repeat the loop____   
+                            break;
+                        default: Console.WriteLine("Invalid choice , please try agine!"); break;
+                    }
+                }
+
+                Console.WriteLine("Do You Want Another Option  ? y / n");
+                choice = Console.ReadKey().KeyChar;
+
+            } while (choice == 'y' || choice == 'Y');
+            Console.WriteLine("Thank you for using Bank System!");
+        }
