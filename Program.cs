@@ -997,3 +997,17 @@ namespace MiniBankSystemProjectOverview
                 }
             }
         }
+        //___________ View All Accounts Function______________ 
+        public static void ViewAllAccounts()
+        {
+
+            Console.WriteLine($"Account ID {"|"} User Name {"|"} National ID {"|"} Balance Amount");
+            //iteration for loop all index values in lists
+            for (int i = 0; i < AccountUserNationalID.Count; i++)
+            {
+                //display list values for every index
+                Console.WriteLine($"{accountNumbers[i]}\t{"|"}{AccountUserNames[i]}\t{"|"}{AccountUserNationalID[i]}\t{"|"}{UserBalances[i]}");
+
+            }
+
+        }
