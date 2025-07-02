@@ -425,3 +425,59 @@ namespace MiniBankSystemProjectOverview
                 Console.ReadLine();
             }
         }
+
+        //___________Deposit Function_________ 
+        public static void Deposit(int IndexID)
+        {
+            int tries = 0;
+            // Initialize a boolean flag to control the deposit loop.
+            bool IsDeposit = false;
+            // Initialize a variable to store the final parsed deposit amount.
+            double FinalDepositAmount = 0.0;
+            // Initialize an index to find the user's position in the account list.
+
+            // Start a try block to catch potential runtime exceptions.
+            try
+            {
+                // Repeat until a valid deposit is made.
+                do
+                {
+                    //IndexID = LoginWithID();
+                    Console.WriteLine("Enter the amount of money you want to deposit: ");
+                    string DepositAmount = Console.ReadLine();
+                    // Validate the entered amount using a custom method.
+                    bool ValidDepositAmount = AmountValid(DepositAmount);
+                    if (ValidDepositAmount == false)
+                    {
+                        // Display error if the input is not valid.
+                        Console.WriteLine("Invalid input");
+                        IsDeposit = false;
+                        tries++;
+                    }
+                    // If input is valid, find the user index.
+                    else
+                    {
+                        // convert string to double using TryParse
+                        double.TryParse(DepositAmount, out FinalDepositAmount);
+
+                        // Update the user's balance by adding the deposit amount.
+                        UserBalances[IndexID] = UserBalances[IndexID] + FinalDepositAmount;
+                        UserBalances[IndexID] = UserBalances[IndexID] + FinalDepositAmount;
+                        PrintReceipt(transactionType: "Deposit", amount: FinalDepositAmount, balance: UserBalances[IndexID]);
+                        // Set the flag to true to exit the loop.
+                        IsDeposit = true;
+                        // Exit the method (if inside a method).
+                        return;
+
+                    }
+                    if (tries == 3)
+                    {
+                        Console.WriteLine("You have exceeded the number of times you are allowed to enter a valid value.");
+                        return;
+                    }
+                } while (IsDeposit == false && tries < 3);
+            }
+            //Print any exception message that occurs during execution.
+            catch (Exception e) { Console.WriteLine(e.Message); }
+
+        }
