@@ -1210,3 +1210,192 @@ namespace MiniBankSystemProjectOverview
                 return -1;
             }
         }
+
+
+        //========== valadition ==========
+
+        // ________string validation__________________ 
+        //The purpose of this function is to check the validity of a text string (word) that contains only alphabetic characters (either lowercase or uppercase), and if the string contains anything else (such as numbers or symbols), it is considered invalid.
+        public static bool stringOnlyLetterValidation(string word)
+        {
+            bool IsValid = true;
+            string ValidWord = "";
+            if (string.IsNullOrEmpty(word) && word.All(char.IsLetter))
+            {
+                Console.WriteLine("Input is just empty!");
+                IsValid = false;
+
+            }
+            else
+            {
+                IsValid = true;
+            }
+
+            if (Regex.IsMatch(word, @"^[a-zA-Z]+$"))
+            {
+                //Console.WriteLine("Valid: only letters.");
+                IsValid = true;
+            }
+            else
+            {
+                Console.WriteLine("Invalid: contains non-letter characters.");
+                IsValid = false;
+            }
+
+            return IsValid;
+        }
+        // _________validate numeric strting_________
+        public static string StringWithNumberValidation(string word)
+        {
+            bool IsValid = true;
+            string ValidWord = "";
+            if (string.IsNullOrWhiteSpace(word))
+            {
+                Console.WriteLine("Input is just spaces or empty!");
+                IsValid = false;
+
+            }
+            else
+            {
+                IsValid = true;
+            }
+            if (Regex.IsMatch(word, @"^\d+$"))
+            {
+                Console.WriteLine("Valid: only numbers.");
+                IsValid = true;
+
+            }
+            else
+            {
+                Console.WriteLine("Invalid: contains non-numeric characters.");
+                IsValid = false;
+            }
+            if (IsValid)
+            {
+                ValidWord = word;
+            }
+            else
+            {
+                Console.WriteLine("word unsaved! try agine");
+            }
+            return ValidWord;
+        }
+
+        //__________NationalID validation formate__________
+        public static bool IDValidation(string NationalID)
+        {
+            bool IsValid = true;
+            // Check if the input is not null or empty
+            if (!string.IsNullOrWhiteSpace(NationalID))
+            {
+
+                if (Regex.IsMatch(NationalID, @"^\d+$"))
+                {
+                    // Check if input is exactly 8 digits and only contains numbers
+                    if (NationalID.Length == 8 && NationalID.All(char.IsDigit))
+                    {
+                        //Console.WriteLine("your National ID : " + NationalID);
+                        IsValid = true;
+                    }
+                    else
+                    {
+                        IsValid = false;
+                    }
+
+                }
+                else
+                {
+                    IsValid = false;
+                }
+
+            }
+            else
+            {
+                IsValid = false;
+            }
+
+            return IsValid;
+        }
+        //________numeric validation with double value______________
+        public static bool AmountValid(string amount)
+        {
+            // Define a regular expression pattern to match decimal numbers (e.g., 10.5)
+            string pattern = @"^\d+\.\d+$";
+            // Check if the input string is not null or empty
+            if (!string.IsNullOrEmpty(amount))
+            {
+                // Check if the input string matches the decimal format defined by the regex
+                if (Regex.IsMatch(amount, pattern))
+                {
+                    // Try converting the string to a double
+                    if (double.TryParse(amount, out double result))
+                    {
+                        // Check if the parsed number is greater than zero
+                        if (result > 0)
+                        {
+                            // Input is valid, print confirmation and return true
+                            //Console.WriteLine("Valid input: " + result);
+                            return true;
+
+                        }
+                        else
+                        {
+                            // Number is less than or equal to zero
+                            Console.WriteLine("Amount must be greater than zero.");
+                        }
+                    }
+                    else
+                    {
+                        // Parsing failed despite matching the regex (edge case)
+                        Console.WriteLine("Invalid format. Please enter a valid number (e.g., 0.0)");
+                    }
+                }
+                else
+                {
+                    // Input doesn't match the required decimal format
+                    Console.WriteLine("Invalid format. Please enter a number with valid formate (0.0)");
+                }
+            }
+            else
+            {
+                // Input is null or empty
+                Console.WriteLine("Invalid null or empty value! Try again.");
+            }
+            // Return false if any validation step fails
+            return false;
+        }
+
+        // validate string which letter with number
+        public static bool StringlettersWithNumbers(string word)
+        {
+            bool IsValid = true;
+            string ValidWord = "";
+            if (string.IsNullOrEmpty(word) && word.All(char.IsLetter))
+            {
+                Console.WriteLine("Input is just empty!");
+                IsValid = false;
+
+            }
+            else
+            {
+                IsValid = true;
+            }
+
+            return IsValid;
+        }
+
+
+        // Check the exist of user ID in the list
+        public static bool CheckUserIDExist(string UserID)
+        {
+            // Loop through the list of registered National IDs
+            for (int i = 0; i < AccountUserNationalID.Count; i++)
+            {
+                // Check if the current ID in the list matches the user's input
+                if (AccountUserNationalID[i] == UserID)
+                {
+                    return true; // User ID exists in the list
+                }
+            }
+            return false; // User ID does not exist in the list
+        }
