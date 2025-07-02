@@ -1399,3 +1399,115 @@ namespace MiniBankSystemProjectOverview
             }
             return false; // User ID does not exist in the list
         }
+
+        //__________________Ask to enter ID number_______________________
+
+        // valid user id
+        public static bool UserLogin(string ID)
+        {
+            int IndexUserID = 0;
+            bool ValidUserLogin = true;
+            // Start of try block to catch any unexpected runtime exceptions
+            try
+            {
+
+                bool ValidID = IDValidation(ID); // Validate the input ID using a validation method
+                if (ValidID == true)  // Proceed only if the ID is valid
+                {
+                    bool userFound = false;
+                    // Loop through the list of registered National IDs
+                    for (int i = 0; i < AccountUserNationalID.Count; i++)
+                    {
+                        // Check if the current ID in the list matches the user's input
+                        if (AccountUserNationalID[i] == ID)
+                        {
+                            IndexUserID = i;
+                            userFound = true;  // If match found, set userFound = true
+                            break;
+                        }
+                    }
+                    if (userFound)
+                    {
+                        Console.WriteLine($"successfully enter this {AccountUserNationalID[IndexUserID]} account!");
+                        ValidUserLogin = true;
+
+                    }
+                    else
+                    {
+                        // If loop completes with no match, show message
+                        Console.WriteLine("User  with this ID number not found. please create an account before do this process");
+                        ValidUserLogin = false;  // User not found, so login fails
+
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("National ID is invalid! please try agine");
+                    Console.WriteLine("National ID should be exactly 8 digits and numeric only.");
+                    ValidUserLogin = false;
+                }
+
+            }
+            catch (Exception e) // Catch any exceptions that occur
+            {
+                Console.WriteLine(e.Message); // Print the error message
+                ValidUserLogin = false;
+            }
+            //Console.WriteLine($"UserLogin result: {ValidUserLogin}"); // Print the result of UserLogin for debugging
+            return ValidUserLogin;
+
+        }
+
+        //________valid Admin exist___________ 
+        public static bool AdminLogin(string ID)
+        {
+            bool ValidUserLogin = true;
+            // Start of try block to catch any unexpected runtime exceptions
+            try
+            {
+
+                bool ValidID = IDValidation(ID); // Validate the input ID using a validation method
+                if (ValidID == true)  // Proceed only if the ID is valid
+                {
+                    bool userFound = false;
+                    // Loop through the list of registered National IDs
+                    for (int i = 0; i < AdminID.Count; i++)
+                    {
+                        // Check if the current ID in the list matches the user's input
+                        if (AdminID[i] == ID)
+                        {
+                            userFound = true;  // If match found, set userFound = true
+                            break;
+                        }
+                    }
+                    if (userFound)
+                    {
+                        Console.WriteLine("Admin Login successful!");
+                        ValidUserLogin = true;
+
+                    }
+                    else
+                    {
+                        // If loop completes with no match, show message
+                        Console.WriteLine("User not found. please create an account before do this process");
+                        ValidUserLogin = false;  // User not found, so login fails
+
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("National ID is invalid! please try agine");
+                    Console.WriteLine("National ID should be exactly 8 digits and numeric only.");
+                    ValidUserLogin = false;
+                }
+
+            }
+            catch (Exception e) // Catch any exceptions that occur
+            {
+                Console.WriteLine(e.Message); // Print the error message
+                ValidUserLogin = false;
+            }
+            //Console.WriteLine($"UserLogin result: {ValidUserLogin}"); // Print the result of UserLogin for debugging
+            return ValidUserLogin;
+
+        }
