@@ -1098,3 +1098,11 @@ namespace MiniBankSystemProjectOverview
 
 
         }
+        //_______Show Total Bank Balance______
+        public static void ShowTotalBankBalance()
+        {
+            // Calculate the total balance by summing all user balances
+            double totalBalance = UserBalances.Sum();
+            // Display the total balance
+            Console.WriteLine($"Total Bank Balance: {totalBalance}");
+        }
