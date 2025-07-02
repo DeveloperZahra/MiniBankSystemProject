@@ -337,3 +337,91 @@ namespace MiniBankSystemProjectOverview
             }
 
         }
+
+        //________User Menu Operation__________
+        public static void UserMenuOperations(int IndexID)
+        {
+            bool inUserMenu = true;
+            // while loop to display the mnue ewhile the flag is true 
+            while (inUserMenu)
+            {
+                Console.Clear();
+                Console.WriteLine("\n------ User Menu Operation ------");
+                Console.WriteLine("1. Deposit");
+                Console.WriteLine("2. Withdraw");
+                Console.WriteLine("3. View Balance");
+                Console.WriteLine("4. Submit Review/Complaint");
+                Console.WriteLine("5. Transfer Money");
+                Console.WriteLine("6. Undo Last Complaint");
+                Console.WriteLine("0. Return to Main Menu");
+                Console.Write("Select Option: ");
+                string userChoice = Console.ReadLine();
+                Console.WriteLine();
+
+
+                switch (userChoice)
+                {
+                    // case to Deposit
+                    case "1":
+
+                        Console.WriteLine("Proceeding to deposit...");
+                        Deposit(IndexID); // If user exists, proceed with deposit
+                        Console.ReadLine(); // Wait for user input before continuing
+                        break;
+
+                    // case to Withdraw
+                    case "2":
+
+                        Console.WriteLine("Proceeding to withdraw...");
+                        withdraw(); // If user exists, proceed with withdraw
+                        Console.ReadLine(); // Wait for user input before continuing
+                        break;
+
+                    // case to View Balance
+                    case "3":
+
+                        Console.WriteLine("Proceeding to Check Balance...");
+                        CheckBalance(IndexID); // If user exists, proceed with chech balance
+                        Console.ReadLine(); // Wait for user input before continuing
+                        break;
+
+                    // case to Submit Review/Complaint
+                    case "4":
+                        Console.WriteLine("Review submitte...");
+                        SubmitReview();
+                        Console.ReadLine();
+                        break;
+
+                    // Transfer Money
+                    case "5":
+                        // Ask user to enter the National ID of the account to transfer money to
+                        int UserIndexID2 = UserLoginWithID();
+                        if (UserIndexID2 != -1 && UserIndexID2 != IndexID) // when user login to its account by accountID number, this number save in value IndexID which decalre in "internal calss program" so when want to transer from its account to another account, no need to enter its accountIDNumber agine it save temberary in variable "IndexID"
+                        {
+                            Transfer(IndexID, UserIndexID2); // If user exists, proceed with transfer
+                        }
+                        else if (UserIndexID2 == IndexID)
+                        {
+                            Console.WriteLine("You cannot transfer money to your own account.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Login failed. Please check the National ID of the recipient.");
+                        }
+                        Console.ReadLine(); // Wait for user input before continuing
+                        break;
+
+                    // Undo Last Complaint
+                    case "6":
+                        UndoLastComplaint();
+                        Console.ReadLine(); // Wait for user input before continuing
+                        break;
+
+                    // case to exist from user menu and Return to Main Menu 
+                    case "0": inUserMenu = false; break;
+                    default: Console.WriteLine("Invalid choice , Please Try Agine! "); break;
+                }
+                Console.WriteLine("press any key");
+                Console.ReadLine();
+            }
+        }
