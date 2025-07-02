@@ -979,3 +979,21 @@ namespace MiniBankSystemProjectOverview
 
             return IndexId;
         }
+        //_______View Pending Requests Function_______ 
+        public static void ViewPendingRequests()
+        {
+            //check if tere is any pending requests
+            if (createAccountRequests.Count() == 0)
+            {
+                Console.WriteLine("There is no pending request yet");
+            }
+            else
+            {
+                // display all pending request
+                foreach (string request in createAccountRequests)
+                {
+                    Console.WriteLine(request);
+                    Console.WriteLine("=======================");
+                }
+            }
+        }
