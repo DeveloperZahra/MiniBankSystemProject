@@ -467,6 +467,14 @@ namespace MiniBankSystemProjectOverview
                         return;
                     }
                 } while (IsDeposit == false && tries < 3);
+
+                if (IsDeposit = true)
+
+                {
+                    Console.WriteLine("Deposit is Successfully");
+                    PrintReceipt(transactionType= "Deposit", amount = FinalDepositAmount , balance = UserBalances[IndexID]);
+                    Console.ReadLine();
+                } 
             }
             //Print any exception message that occurs during execution.
             catch (Exception e) { Console.WriteLine(e.Message); }
@@ -535,6 +543,17 @@ namespace MiniBankSystemProjectOverview
             }
             //Print any exception message that occurs during execution.
             catch (Exception e) { Console.WriteLine(e.Message); }
+        }
+
+
+        //_________Print Receipt After Deposit/Withdraw_________ 
+        public static void PrintReceipt(string transactionType, double amount, double balance)
+        {
+            Console.WriteLine("\n--- Transaction Receipt ---");
+            Console.WriteLine($"Transaction Type: {transactionType}");
+            Console.WriteLine($"Amount: {amount}");
+            Console.WriteLine($"New Balance: {balance}");
+            Console.WriteLine("---------------------------\n");
         }
 
         //__________Check Balance Operation for User (Function.3)________
@@ -809,6 +828,32 @@ namespace MiniBankSystemProjectOverview
 
         }
 
+
+
+        //_________Get user  Account Index ____________
+        static int GetAccountIndex()
+        {
+            Console.Write("Enter account number: ");
+            try //Starts a try block to attempt to execute the code normally with the possibility of catching errors.
+            {
+                int accNum = Convert.ToInt32(Console.ReadLine());
+                int index = accountNumbers.IndexOf(accNum); //Finds the index of this account number accNum within the list accountNumbers.If it finds it, it returns its position(e.g., 0, 1, or 2).If it does not find it, it returns -1.
+                //If index returns -1 (meaning the account number is not in the list), it prints the message "Account not found", and returns -1 to tell other functions that the account does not exist.
+                if (index == -1)
+                {
+                    Console.WriteLine("Account not found.");
+                    return -1;
+                }
+
+                return index;
+            }
+            catch //If an error occurs (e.g. the user types text instead of a number), the error is caught and "Invalid input" is printed and -1 is returned as an indication that the input failed.
+            {
+                Console.WriteLine("Invalid input.");
+                return -1;
+            }
+        }
+
         //________login Admin(2)__________ 
         public static int AdminLoginWithID()
         {
@@ -1004,7 +1049,6 @@ namespace MiniBankSystemProjectOverview
 
 }
 
-
 //___________ View Reviews for the Admin Features Function(2)______________ 
 public static void ViewReviews()
         {
@@ -1152,58 +1196,6 @@ public static void ViewReviews()
         }
 
 
-
-
-        //_________Print Receipt After Deposit/Withdraw_________ 
-        public static void PrintReceipt(string transactionType, double amount, double balance)
-        {
-            Console.WriteLine("\n--- Transaction Receipt ---");
-            Console.WriteLine($"Transaction Type: {transactionType}");
-            Console.WriteLine($"Amount: {amount}");
-            Console.WriteLine($"New Balance: {balance}");
-            Console.WriteLine("---------------------------\n");
-        }
-
-
-
-
-
-
-        //________view balance (5)___________
-        static void ViewBalance()
-        {
-            int index = GetAccountIndex();
-            if (index == -1) return;//If the account is not found (index == -1), the function terminates immediately without showing anything.
-
-            Console.WriteLine($"Account Number: {accountNumbers[index]}");//This prints the account number corresponding to the indicator entered by the user.
-            Console.WriteLine($"Holder Name: {accountNames[index]}");//This prints the name of the account holder corresponding to this account.
-            Console.WriteLine($"Current Balance: {balances[index]}");//This prints the current balance of the account selected by the user.
-        }
-
-
-        //_________Get Account Index(10)____________
-        static int GetAccountIndex()
-        {
-            Console.Write("Enter account number: ");
-            try //Starts a try block to attempt to execute the code normally with the possibility of catching errors.
-            {
-                int accNum = Convert.ToInt32(Console.ReadLine());
-                int index = accountNumbers.IndexOf(accNum); //Finds the index of this account number accNum within the list accountNumbers.If it finds it, it returns its position(e.g., 0, 1, or 2).If it does not find it, it returns -1.
-                //If index returns -1 (meaning the account number is not in the list), it prints the message "Account not found", and returns -1 to tell other functions that the account does not exist.
-                if (index == -1)
-                {
-                    Console.WriteLine("Account not found.");
-                    return -1;
-                }
-
-                return index;
-            }
-            catch //If an error occurs (e.g. the user types text instead of a number), the error is caught and "Invalid input" is printed and -1 is returned as an indication that the input failed.
-            {
-                Console.WriteLine("Invalid input.");
-                return -1;
-            }
-        }
 
 
         //========== valadition ==========
