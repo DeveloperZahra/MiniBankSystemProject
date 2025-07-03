@@ -165,58 +165,6 @@ namespace MiniBankSystemProjectOverview
             }
         }
 
-        // ==========  Addition The  Function Types Of The  Admin Menu==========
-
-        static void AdminMenu()
-        {
-            bool inAdminMenu = true;
-            // while loop to display the mnue ewhile the flag is true
-            while (inAdminMenu)
-            {
-                Console.Clear();
-                Console.WriteLine("\n------ Admin Menu ------");
-                Console.WriteLine("1. create account");
-                Console.WriteLine("2. Login");
-                Console.WriteLine("0. Return to Main Menu");
-                Console.Write("Select option: ");
-                string adminChoice = Console.ReadLine();
-
-                switch (adminChoice)
-                {
-                    // case to Request Account Creation
-                    case "1":
-                        AdminCreateAccount();
-                        Console.ReadLine();
-                        break;
-
-                    case "2":
-                        IndexID = AdminLoginWithID();
-                        Console.ReadLine(); // Wait for user input before continuing
-                        if (IndexID != -1)
-                        {
-                            AdminMenuOperations();
-                            Console.ReadLine();
-                        }
-                        else
-                        {
-                            Console.WriteLine("Login failed. Please check your National ID.");
-                        }
-                        break;
-
-                    case "0": inAdminMenu = false; break; // this will Eixt the  loop and return
-                    default:
-                        Console.WriteLine("Invalid choice.");
-
-                        Console.WriteLine("press any key");
-                        Console.ReadLine();
-
-                        break;
-                }
-
-            }
-        }
-
-        // ========== User features function ==========
         //_______________Request account creation (1) ______
         static void RequestAccountCreation()
         {
@@ -282,10 +230,11 @@ namespace MiniBankSystemProjectOverview
                         {
                             IsSave = false;
                             tries++;
+                            Console.WriteLine(" Invalid National ID number... Please enter 8 digits");
                         }
 
                     }
-                } while (IsSave == false && tries < 3);
+                } while (ValidID == false && tries < 3);
                 // check if user tries to enter valid ID more than 3 times
                 if (tries == 3)
                 {
@@ -338,7 +287,48 @@ namespace MiniBankSystemProjectOverview
 
         }
 
-        //________User Menu Operation__________
+        //___________login user (2)____________ 
+        public static int UserLoginWithID()
+        {
+            int tries = 0;
+            int IndexId = -1;
+            bool UserExist = false;
+            string ID = "";
+            do
+            {
+                // Prompt user to enter their National ID
+                Console.WriteLine("Enter User National ID: ");
+                ID = Console.ReadLine(); // Read user input from console                           
+                // valid user exist
+                UserExist = UserLogin(ID);
+                if (UserExist == false)
+                {
+                    tries++;
+                }
+                if (tries == 3)
+                {
+                    Console.WriteLine("You have exceeded the number of times you are allowed to enter a valid ID.");
+                    break;
+                }
+            } while (UserExist == false && tries < 3);
+            if (UserExist == true)
+            {
+                //lopp thriugh items in list
+                for (int i = 0; i < AccountUserNationalID.Count; i++)
+                {
+                    //check if Input exist in the list 
+                    if (AccountUserNationalID[i] == ID)
+                    {
+                        // Store the index of the user with the matching ID.
+                        IndexId = i;
+                    }
+                }
+            }
+
+            return IndexId;
+        }
+
+        //________User Menu Operation (3)__________
         public static void UserMenuOperations(int IndexID)
         {
             bool inUserMenu = true;
@@ -426,7 +416,8 @@ namespace MiniBankSystemProjectOverview
             }
         }
 
-        //___________Deposit Function_________ 
+        // ========== User features function ==========
+        //___________Deposit Operation for User (Function.1)_________ 
         public static void Deposit(int IndexID)
         {
             int tries = 0;
@@ -482,7 +473,7 @@ namespace MiniBankSystemProjectOverview
 
         }
 
-        //__________________Withdraw Function_____________ 
+        //__________________Withdraw  Operation for User (Function.2)_____________ 
         public static void withdraw()
         {
             int tries = 0;
@@ -545,13 +536,14 @@ namespace MiniBankSystemProjectOverview
             //Print any exception message that occurs during execution.
             catch (Exception e) { Console.WriteLine(e.Message); }
         }
-        //__________Check Balance Function________
+
+        //__________Check Balance Operation for User (Function.3)________
         public static void CheckBalance(int IndexID)
         {
             Console.WriteLine($"Your Current Balance is {UserBalances[IndexID]}");
         }
 
-        //___________Submit Review Function__________ 
+        //___________Submit Review Operation for User (Function.4)__________ 
         public static void SubmitReview()
         {
             //error handling using try-catch
@@ -580,82 +572,11 @@ namespace MiniBankSystemProjectOverview
             }
         }
 
-        //___________login user____________ 
-        public static int UserLoginWithID()
-        {
-            int tries = 0;
-            int IndexId = -1;
-            bool UserExist = false;
-            string ID = "";
-            do
-            {
-                // Prompt user to enter their National ID
-                Console.WriteLine("Enter User National ID: ");
-                ID = Console.ReadLine(); // Read user input from console                           
-                // valid user exist
-                UserExist = UserLogin(ID);
-                if (UserExist == false)
-                {
-                    tries++;
-                }
-                if (tries == 3)
-                {
-                    Console.WriteLine("You have exceeded the number of times you are allowed to enter a valid ID.");
-                    break;
-                }
-            } while (UserExist == false && tries < 3);
-            if (UserExist == true)
-            {
-                //lopp thriugh items in list
-                for (int i = 0; i < AccountUserNationalID.Count; i++)
-                {
-                    //check if Input exist in the list 
-                    if (AccountUserNationalID[i] == ID)
-                    {
-                        // Store the index of the user with the matching ID.
-                        IndexId = i;
-                    }
-                }
-            }
-
-            return IndexId;
-        }
-
-
-        //_____________Process Next Acount Request(2)____________
-        static void ProcessNextAccountRequest()
-        {
-            //check if the list of account requests is empty or not. If it is empty, it prints a message "There are no pending account requests", then exits the function directly using return.
-            if (createAccountRequests.Count == 0)
-            {
-                Console.WriteLine("No pending account requests.");
-                return;
-            }
-
-            //var (name, nationalID) = createAccountRequests.Dequeue();
-            string request = createAccountRequests.Dequeue();//This request is a string that takes the first request in the createAccountRequests list, dequeues it, and stores it in the request variable.
-                                                             //Here, the string is split into two parts using the | symbol as a separator.
-            string[] parts = request.Split('|');
-            // The resulting array will be parts, where parts[0] = the name and parts[1] = the national ID number.
-            string name = parts[0];
-            string nationalID = parts[1];
-
-            int newAccountNumber = lastAccountNumber + 1;//This creates a new account number by adding 1 to the last registered account number.
-
-            accountNumbers.Add(newAccountNumber);//to Adds new account to several lists
-            accountNames.Add($"{name} ");
-            balances.Add(0.0);
-
-            lastAccountNumber = newAccountNumber;//The last account number (lastAccountNumber) will be the new account number that was created.
-
-            Console.WriteLine($"Account created for {name} with Account Number: {newAccountNumber}");
-        }
-
         /*
-       //_________________Transfer money________
-          • Let users transfer money between two account numbers. 
-          • Check balance constraints on sender before transferring.
-       */
+      //_________________Transfer money Operation for User (Function.5)________
+         • Let users transfer money between two account numbers. 
+         • Check balance constraints on sender before transferring.
+      */
         public static void Transfer(int UserIndexID, int UserIndexID2)
         {
             string TransferAmount = "";
@@ -694,7 +615,7 @@ namespace MiniBankSystemProjectOverview
                             UserBalances[UserIndexID] -= FinalTransferAmount;
                             // Update the receiver's balance by adding the transfer amount.
                             UserBalances[UserIndexID2] += FinalTransferAmount;
-                            Console.WriteLine($"Successfully transferred {FinalTransferAmount} from Account {AccountNumbers[UserIndexID]} to Account {AccountNumbers[UserIndexID2]}");
+                            Console.WriteLine($"Successfully transferred {FinalTransferAmount} from Account {accountNumbers[UserIndexID]} to Account {accountNumbers[UserIndexID2]}");
                             Console.WriteLine($"Your Current Balance is {UserBalances[UserIndexID]}");
                             IsTransfer = true; // Set flag to true to exit loop.
                         }
@@ -714,7 +635,7 @@ namespace MiniBankSystemProjectOverview
             catch (Exception e) { Console.WriteLine(e.Message); } // Print any exception message that occurs during execution.
         }
 
-        //_________Undo Last Complaint Submitted________ 
+        //_________Undo Last Complaint Submitted Operation for User (Function.6)________ 
         public static void UndoLastComplaint()
         {
             // Check if there are any reviews in the stack
@@ -730,18 +651,60 @@ namespace MiniBankSystemProjectOverview
             }
         }
 
-        //_________Print Receipt After Deposit/Withdraw_________ 
-        public static void PrintReceipt(string transactionType, double amount, double balance)
+
+        // ==========  Addition The  Function Types Of The  Admin Menu==========
+
+        static void AdminMenu()
         {
-            Console.WriteLine("\n--- Transaction Receipt ---");
-            Console.WriteLine($"Transaction Type: {transactionType}");
-            Console.WriteLine($"Amount: {amount}");
-            Console.WriteLine($"New Balance: {balance}");
-            Console.WriteLine("---------------------------\n");
+            bool inAdminMenu = true;
+            // while loop to display the mnue ewhile the flag is true
+            while (inAdminMenu)
+            {
+                Console.Clear();
+                Console.WriteLine("\n------ Admin Menu ------");
+                Console.WriteLine("1. create account");
+                Console.WriteLine("2. Login");
+                Console.WriteLine("0. Return to Main Menu");
+                Console.Write("Select option: ");
+                string adminChoice = Console.ReadLine();
+
+                switch (adminChoice)
+                {
+                    // case to Request Account Creation
+                    case "1":
+                        AdminCreateAccount();
+                        Console.ReadLine();
+                        break;
+
+                    case "2":
+                        //AdminLoginWithID();
+                        IndexID = AdminLoginWithID();
+                        Console.ReadLine(); // Wait for user input before continuing
+                        if (IndexID != -1)
+                        {
+                            AdminMenuOperations();
+                            Console.ReadLine();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Login failed. Please check your National ID.");
+                        }
+                        break;
+
+                    case "0": inAdminMenu = false; break; // this will Eixt the  loop and return
+                    default:
+                        Console.WriteLine("Invalid choice.");
+
+                        Console.WriteLine("press any key");
+                        Console.ReadLine();
+
+                        break;
+                }
+
+            }
         }
 
-        // ===================== Admin Features Function ==========================
-        // Admin create account 
+        //_____Admin create account(1)_______ 
         public static void AdminCreateAccount()
         {
             string UserName = "";
@@ -845,7 +808,50 @@ namespace MiniBankSystemProjectOverview
             }
 
         }
-        //_____Admin Operation______ 
+
+        //________login Admin(2)__________ 
+        public static int AdminLoginWithID()
+        {
+            int tries = 0;
+            int IndexId = -1;
+            bool AdminExist = false;
+            string ID = "";
+            do
+            {
+                // Prompt user to enter their National ID
+                Console.WriteLine("Enter You National ID: ");
+                ID = Console.ReadLine(); // Read user input from console
+                AdminExist = AdminLogin(ID);
+                if (AdminExist == false)
+                {
+                    tries++;
+                }
+                if (tries == 3)
+                {
+                    Console.WriteLine("You have exceeded the number of times you are allowed to enter a valid ID.");
+                    break;
+                }
+            } while (AdminExist == false && tries < 3);
+            if (AdminExist == true)
+            {
+                //loop thriugh items in list
+                for (int i = 0; i < AdminID.Count; i++)
+                {
+                    //check if Input exist in the list 
+                    if (AdminID[i] == ID)
+                    {
+                        // Store the index of the user with the matching ID.
+                        IndexId = i;
+
+                    }
+                }
+            }
+
+            return IndexId;
+        }
+
+
+        //_____Admin Operation(3)______ 
         public static void AdminMenuOperations()
         {
             bool InAdminMenu = true;
@@ -940,80 +946,67 @@ namespace MiniBankSystemProjectOverview
 
         }
 
-        //________login Admin__________ 
-        public static int AdminLoginWithID()
+        // ===================== Admin Features Function ==========================
+
+        //_____________Process Next Acount Request for the Admin Features Function(1)____________
+        static void ProcessNextAccountRequest()
         {
-            int tries = 0;
-            int IndexId = -1;
-            bool AdminExist = false;
-            string ID = "";
-            do
+            //check if the list of account requests is empty or not. If it is empty, it prints a message "There are no pending account requests", then exits the function directly using return.
+            if (createAccountRequests.Count == 0)
             {
-                // Prompt user to enter their National ID
-                Console.WriteLine("Enter You National ID: ");
-                ID = Console.ReadLine(); // Read user input from console
-                AdminExist = AdminLogin(ID);
-                if (AdminExist == false)
-                {
-                    tries++;
-                }
-                if (tries == 3)
-                {
-                    Console.WriteLine("You have exceeded the number of times you are allowed to enter a valid ID.");
-                    break;
-                }
-            } while (AdminExist == false && tries < 3);
-            if (AdminExist == true)
-            {
-                //loop thriugh items in list
-                for (int i = 0; i < AdminID.Count; i++)
-                {
-                    //check if Input exist in the list 
-                    if (AdminID[i] == ID)
-                    {
-                        // Store the index of the user with the matching ID.
-                        IndexId = i;
-                    }
-                }
+                Console.WriteLine("No pending account requests.");
+                return;
             }
 
-            return IndexId;
-        }
-        //_______View Pending Requests Function_______ 
-        public static void ViewPendingRequests()
-        {
-            //check if tere is any pending requests
-            if (createAccountRequests.Count() == 0)
+            //var (name, nationalID) = createAccountRequests.Dequeue();
+            string request = createAccountRequests.Dequeue();//This request is a string that takes the first request in the createAccountRequests list, dequeues it, and stores it in the request variable.
+                                                             //Here, the string is split into two parts using the | symbol as a separator.
+            string[] parts = request.Split('|');
+            // The resulting array will be parts, where parts[0] = the name and parts[1] = the national ID number.
+            string UserName = SplitRrquest[0];
+            Console.WriteLine($"User Name: {UserName} ");
+
+            string UserNationalID = SplitRrquest[1];
+            Console.WriteLine($"User National ID: {UserNationalID} ");
+
+            int newAccountNumber = lastAccountNumber + 1;//This creates a new account number by adding 1 to the last registered account number.
+
+            double balance = MinimumBalance;
+            Console.WriteLine("Do you want to accept account creation request (y/n) !");
+            char choice = Console.ReadKey().KeyChar;
+            if (choice == 'y' || choice == 'Y')
+
             {
-                Console.WriteLine("There is no pending request yet");
+                // Add user name in the AccountUserNames list
+                AccountUserNames.Add(UserName);
+                // Add user national ID in the AccountUserNationalID list
+                AccountUserNationalID.Add(UserNationalID);
+                // Add user Account ID in the AccountIDNumbers list
+                accountNumbers.Add(NewAccountIDNumber);
+                // Add user initial balance in the Balances list
+                UserBalances.Add(balance);
+                // add user type 
+                Console.WriteLine($"Account created for {UserName} with Account Number: {NewAccountIDNumber}");
+                LastAccountNumber = NewAccountIDNumber;
             }
             else
             {
-                // display all pending request
-                foreach (string request in createAccountRequests)
-                {
-                    Console.WriteLine(request);
-                    Console.WriteLine("=======================");
-                }
+                Console.WriteLine("Account Dose not accept!");
+                string InAcceptRequest = request;
+                InAcceptcreateAccountRequests.Enqueue(InAcceptRequest);
             }
         }
-        //___________ View All Accounts Function______________ 
-        public static void ViewAllAccounts()
-        {
+    catch
+    {
+        //display massage to the user if anyy error happened during running program 
+        Console.WriteLine("Accept process fail, Try Agine!");
+    }
 
-            Console.WriteLine($"Account ID {"|"} User Name {"|"} National ID {"|"} Balance Amount");
-            //iteration for loop all index values in lists
-            for (int i = 0; i < AccountUserNationalID.Count; i++)
-            {
-                //display list values for every index
-                Console.WriteLine($"{accountNumbers[i]}\t{"|"}{AccountUserNames[i]}\t{"|"}{AccountUserNationalID[i]}\t{"|"}{UserBalances[i]}");
+}
 
-            }
 
-        }
-
-        //___________ View Reviews Function______________ 
-        public static void ViewReviews()
+//___________ View Reviews for the Admin Features Function(2)______________ 
+public static void ViewReviews()
         {
             //error handling using try-catch
             try
@@ -1031,63 +1024,43 @@ namespace MiniBankSystemProjectOverview
 
         }
 
-        //______Process Account Request Function____ 
-        public static void ProcessAccountRequest()
+        //___________ View All Accounts for the Admin Features Function(3)______________ 
+        public static void ViewAllAccounts()
         {
-            // handling error using try-catch
-            try
+
+            Console.WriteLine($"Account ID {"|"} User Name {"|"} National ID {"|"} Balance Amount");
+            //iteration for loop all index values in lists
+            for (int i = 0; i < AccountUserNationalID.Count; i++)
             {
-                // check if there is request
-                if (createAccountRequests.Count == 0)
-                {
-                    Console.WriteLine("No pending account requests.");
-                    return;
-                }
-                // get last element (which it is first element enter) in the queue
-                string request = createAccountRequests.Dequeue();
-                // Split the request string using '|' to separate username and national ID
-                string[] SplitRrquest = request.Split("|");
-                // Extract and store the username from the request
-                string UserName = SplitRrquest[0];
-                Console.WriteLine($"User Name: {UserName} ");
-                // Extract and store the national ID from the request
-                string UserNationalID = SplitRrquest[1];
-                Console.WriteLine($"User National ID: {UserNationalID} ");
-                // Increment the last account ID number for the new account
-                int NewAccountIDNumber = LastAccountNumber + 1;
-                // Set initial account balance to 0
-                double balance = MinimumBalance;
-                Console.WriteLine("Do you want to accept account creation request (y/n) !");
-                char choice = Console.ReadKey().KeyChar;
-                if (choice == 'y' || choice == 'Y')
-                {
-                    // Add user name in the AccountUserNames list
-                    AccountUserNames.Add(UserName);
-                    // Add user national ID in the AccountUserNationalID list
-                    AccountUserNationalID.Add(UserNationalID);
-                    // Add user Account ID in the AccountIDNumbers list
-                    accountNumbers.Add(NewAccountIDNumber);
-                    // Add user initial balance in the Balances list
-                    UserBalances.Add(balance);
-                    // add user type 
-                    Console.WriteLine($"Account created for {UserName} with Account Number: {NewAccountIDNumber}");
-                    LastAccountNumber = NewAccountIDNumber;
-                }
-                else
-                {
-                    Console.WriteLine("Account Dose not accept!");
-                    string InAcceptRequest = request;
-                    InAcceptcreateAccountRequests.Enqueue(InAcceptRequest);
-                }
-            }
-            catch
-            {
-                //display massage to the user if anyy error happened during running program 
-                Console.WriteLine("Accept process fail, Try Agine!");
+                //display list values for every index
+                Console.WriteLine($"{accountNumbers[i]}\t{"|"}{AccountUserNames[i]}\t{"|"}{AccountUserNationalID[i]}\t{"|"}{UserBalances[i]}");
+
             }
 
         }
-        //______Search by National ID or Name (Admin Tool)_____
+
+
+        //_______View Pending Requests for the Admin Features Function(4)_______ 
+        public static void ViewPendingRequests()
+        {
+            //check if tere is any pending requests
+            if (createAccountRequests.Count() == 0)
+            {
+                Console.WriteLine("There is no pending request yet");
+            }
+            else
+            {
+                // display all pending request
+                foreach (string request in createAccountRequests)
+                {
+                    Console.WriteLine(request);
+                    Console.WriteLine("=======================");
+                }
+            }
+        }
+
+
+        //______Search by National ID or Name (Admin Tool) for the Admin Features Function(5)_____
         public static void SearchUserByNationalID(int UserIndexID)
         {
 
@@ -1098,7 +1071,9 @@ namespace MiniBankSystemProjectOverview
 
 
         }
-        //_______Show Total Bank Balance______
+
+
+        //_______Show Total Bank Balance for the Admin Features Function(6)______
         public static void ShowTotalBankBalance()
         {
             // Calculate the total balance by summing all user balances
@@ -1108,7 +1083,7 @@ namespace MiniBankSystemProjectOverview
         }
 
 
-        //_________Delete Account___________
+        //_________Delete Account for the Admin Features Function(7)___________
         public static void DeleteAccount(int IndexID)
         {
             // Check if the user exists in the list
@@ -1127,7 +1102,9 @@ namespace MiniBankSystemProjectOverview
             }
         }
 
-        //_____________Show Top 3 Richest Customers_________ 
+
+
+        //_____________Show Top 3 Richest Customers for the Admin Features Function(8)_________ 
         public static void ShowTop3RichestCustomers()
         {
             // Check if there are at least 3 users
@@ -1149,10 +1126,9 @@ namespace MiniBankSystemProjectOverview
         }
 
         /* 
-      _________________Export All Account Info to a New File (CSV or txt)__________ 
+      _________________Export All Account Info to a New File (CSV or txt) for the Admin Features Function(9)__________ 
          • Create a clean export with headers and all customer info.
      */
-
         public static void ExportAccountsToFile(string filePath)
         {
             try
@@ -1174,6 +1150,24 @@ namespace MiniBankSystemProjectOverview
                 Console.WriteLine($"Error exporting accounts: {e.Message}");
             }
         }
+
+
+
+
+        //_________Print Receipt After Deposit/Withdraw_________ 
+        public static void PrintReceipt(string transactionType, double amount, double balance)
+        {
+            Console.WriteLine("\n--- Transaction Receipt ---");
+            Console.WriteLine($"Transaction Type: {transactionType}");
+            Console.WriteLine($"Amount: {amount}");
+            Console.WriteLine($"New Balance: {balance}");
+            Console.WriteLine("---------------------------\n");
+        }
+
+
+
+
+
 
         //________view balance (5)___________
         static void ViewBalance()
@@ -1400,6 +1394,8 @@ namespace MiniBankSystemProjectOverview
             return false; // User ID does not exist in the list
         }
 
+
+
         //__________________Ask to enter ID number_______________________
 
         // valid user id
@@ -1477,6 +1473,7 @@ namespace MiniBankSystemProjectOverview
                         if (AdminID[i] == ID)
                         {
                             userFound = true;  // If match found, set userFound = true
+                            AdminMenuOperations();
                             break;
                         }
                     }
@@ -1484,6 +1481,7 @@ namespace MiniBankSystemProjectOverview
                     {
                         Console.WriteLine("Admin Login successful!");
                         ValidUserLogin = true;
+                        AdminMenuOperations();
 
                     }
                     else
